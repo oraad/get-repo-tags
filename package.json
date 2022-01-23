@@ -1,0 +1,44 @@
+{
+  "name": "get-tags-action",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Fetch Github Repo tags",
+  "main": "lib/main.js",
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write **/*.ts",
+    "format-check": "prettier --check **/*.ts",
+    "lint": "eslint src/**/*.ts",
+    "package": "ncc build --source-map --license licenses.txt",
+    "test": "jest --passWithNoTests",
+    "all": "npm run build && npm run format && npm run lint && npm run package && npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oraad/get-repo-tags.git"
+  },
+  "keywords": [
+    "actions",
+    "node",
+    "setup"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.6.0",
+    "@actions/github": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.21",
+    "@typescript-eslint/parser": "^5.10.0",
+    "@vercel/ncc": "^0.33.1",
+    "eslint": "^8.7.0",
+    "eslint-plugin-github": "^4.3.5",
+    "eslint-plugin-jest": "^25.7.0",
+    "jest": "^27.4.7",
+    "js-yaml": "^4.1.0",
+    "prettier": "2.5.1",
+    "ts-jest": "^27.1.3",
+    "typescript": "^4.5.5"
+  }
+}

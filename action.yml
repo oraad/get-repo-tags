@@ -1,0 +1,17 @@
+name: Get Github tags'
+description: 'Get Github tags from repo'
+author: 'Omar Raad'
+inputs:
+  repo:
+    required: true
+    description: 'GitHub repo under <owner>/<repo> format'
+  limit:
+    description: 'Tags count'
+    required: true
+    default: '10'
+outputs:
+  tags:
+    description: 'Tags JSON'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
