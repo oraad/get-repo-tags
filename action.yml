@@ -1,4 +1,4 @@
-name: 'Get Repo Tags'
+name: 'Get Tags Action'
 description: 'Get Github tags from repo'
 author: 'Omar Raad'
 inputs:

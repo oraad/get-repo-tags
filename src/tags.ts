@@ -1,4 +1,4 @@
-import { Octokit } from './github'
+import {Octokit} from './github'
 
 interface TagRequest {
   owner: string
@@ -10,14 +10,13 @@ export async function getTags(
   octokit: Octokit,
   request: TagRequest
 ): Promise<string[]> {
-
-  const { owner, repo, limit } = request
+  const {owner, repo, limit} = request
   const tags: string[] = []
 
   for (let i = 0; tags.length < limit; i++) {
     const per_page = (limit - tags.length) % 100
 
-    const { data } = await octokit.rest.repos.listTags({
+    const {data} = await octokit.rest.repos.listTags({
       owner,
       repo,
       per_page,

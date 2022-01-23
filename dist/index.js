@@ -1,6 +1,38 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 5928:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getOctokit = void 0;
+const github = __importStar(__nccwpck_require__(5438));
+exports.getOctokit = github.getOctokit;
+
+
+/***/ }),
+
 /***/ 3109:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -36,25 +68,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
-const github = __importStar(__nccwpck_require__(5438));
+const github_1 = __nccwpck_require__(5928);
+const tags_1 = __nccwpck_require__(7532);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const githubToken = core.getInput('github-token');
-            const octokit = github.getOctokit(githubToken);
+            const octokit = (0, github_1.getOctokit)(githubToken);
             const [owner, repo] = core.getInput('repo').split('/');
             const limit = parseInt(core.getInput('limit'));
-            const tags = [];
-            for (let i = 0; tags.length < limit; i++) {
-                const per_page = (limit - tags.length) % 100;
-                const { data } = yield octokit.rest.repos.listTags({
-                    owner,
-                    repo,
-                    per_page,
-                    page: i
-                });
-                tags.push(...data.map(d => d.name));
-            }
+            const tags = yield (0, tags_1.getTags)(octokit, {
+                owner,
+                repo,
+                limit
+            });
             core.setOutput('tags', JSON.stringify(tags));
         }
         catch (error) {
@@ -64,6 +91,46 @@ function run() {
     });
 }
 run();
+
+
+/***/ }),
+
+/***/ 7532:
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getTags = void 0;
+function getTags(octokit, request) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { owner, repo, limit } = request;
+        const tags = [];
+        for (let i = 0; tags.length < limit; i++) {
+            const per_page = (limit - tags.length) % 100;
+            const { data } = yield octokit.rest.repos.listTags({
+                owner,
+                repo,
+                per_page,
+                page: i
+            });
+            tags.push(...data.map(d => d.name));
+            if (data.length < per_page)
+                break;
+        }
+        return tags;
+    });
+}
+exports.getTags = getTags;
 
 
 /***/ }),
