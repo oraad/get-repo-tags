@@ -1,5 +1,5 @@
 {
-  "name": "get-tags-action",
+  "name": "get-repo-tags",
   "version": "1.0.0",
   "private": true,
   "description": "Fetch Github Repo tags",
