@@ -1,4 +1,4 @@
-name: Get Github tags'
+name: 'Get Github tags'
 description: 'Get Github tags from repo'
 author: 'Omar Raad'
 inputs:
@@ -15,3 +15,6 @@ outputs:
 runs:
   using: 'node16'
   main: 'dist/index.js'
+branding:
+  icon: 'tag'
+  color: 'purple'
