@@ -9,6 +9,10 @@ inputs:
     description: 'Tags count'
     required: true
     default: '10'
+  github-token:
+    description: 'GitHub Token as provided by secrets'
+    default: ${{ github.token }}
+    required: true
 outputs:
   tags:
     description: 'Tags JSON'
