@@ -1,27 +1,19 @@
 import * as core from '@actions/core'
-import * as github from '@actions/github'
+import {getOctokit} from './github'
+import {getTags} from './tags'
 
 async function run(): Promise<void> {
   try {
     const githubToken = core.getInput('github-token')
-    const octokit = github.getOctokit(githubToken)
+    const octokit = getOctokit(githubToken)
     const [owner, repo] = core.getInput('repo').split('/')
     const limit = parseInt(core.getInput('limit'))
 
-    const tags: string[] = []
-
-    for (let i = 0; tags.length < limit; i++) {
-      const per_page = (limit - tags.length) % 100
-
-      const {data} = await octokit.rest.repos.listTags({
-        owner,
-        repo,
-        per_page,
-        page: i
-      })
-
-      tags.push(...data.map(d => d.name))
-    }
+    const tags = await getTags(octokit, {
+      owner,
+      repo,
+      limit
+    })
 
     core.setOutput('tags', JSON.stringify(tags))
   } catch (error) {
